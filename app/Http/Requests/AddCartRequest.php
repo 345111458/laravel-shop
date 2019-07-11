@@ -38,7 +38,7 @@ class AddCartRequest extends Request
                         return $fail('该商品已售完');
                     }
                     if ($this->input('amount') > 0 && $sku->stock < $this->input('amount')) {
-                        return $fail('该商品库存不足,大约只剩下：' .$sku->stock);
+                        return $fail('该商品库存不足,大约只剩下：' .$sku->stock .'/多购' . ($this->input('amount') - $sku->stock) . '件');
                     }
                 },
             ],
