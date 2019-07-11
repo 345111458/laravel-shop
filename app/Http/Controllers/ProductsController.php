@@ -78,6 +78,15 @@ class ProductsController extends Controller
     }
 
 
+    //现收藏商品的列表页面
+    public function favorites(Request $request){
+
+    	$products = $request->user()->favoriteProducts()->paginate(16);
+
+        return view('products.favorites', ['products' => $products]);
+    }
+
+
 
     // 新增收藏
     public function favor(Product $product, Request $request)
