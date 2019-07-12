@@ -54,6 +54,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::post('orders', 'OrdersController@store')->name('orders.store');
 
+    Route::get('orders', 'OrdersController@index')->name('orders.index');
+
 });
 
 Route::get('products/{product}', 'ProductsController@show')->name('products.show');
