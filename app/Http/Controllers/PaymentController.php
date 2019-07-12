@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Exceptions\InvalidRequestException;
 use Carbon\Carbon;
+use Endroid\QrCode\QrCode;
+
 
 
 class PaymentController extends Controller
@@ -71,6 +73,29 @@ class PaymentController extends Controller
 
         return app('alipay')->success();
     }
+
+
+
+    public function payByWechat(Order $order, Request $request){
+        
+        $this->authorize('own', $order);
+        if ($order->paid_at || $order->closed) {
+            throw new InvalidRequestException('订单状态不正确');
+        }
+
+        // 之前是直接返回，现在把返回值放到一个变量里
+        $wechatOrder = app('wechat_pay')->scan([
+            'out_trade_no' => $order->no,
+            'total_fee'    => $order->total_amount * 100,
+            'body'         => '支付 Laravel Shop 的订单：'.$order->no,
+        ]);
+        // 把要转换的字符串作为 QrCode 的构造函数参数
+        $qrCode = new QrCode($wechatOrder->code_url);
+
+        // 将生成的二维码图片数据以字符串形式输出，并带上相应的响应类型
+        return response($qrCode->writeString(), 200, ['Content-Type' => $qrCode->getContentType()]);
+    }
+
     
 
 
