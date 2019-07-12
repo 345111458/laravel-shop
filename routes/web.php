@@ -56,6 +56,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::get('orders', 'OrdersController@index')->name('orders.index');
 
+    Route::get('orders/{order}', 'OrdersController@show')->name('orders.show');
+
 });
 
 Route::get('products/{product}', 'ProductsController@show')->name('products.show');

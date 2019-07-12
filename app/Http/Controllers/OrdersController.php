@@ -30,7 +30,15 @@ class OrdersController extends Controller
     }
 
 
+    // 实现订单详情页面。
+    public function show(Order $order, Request $request){
+    	$this->authorize('own' , $order);
 
+        return view('orders.show', ['order' => $order->load(['items.productSku', 'items.product'])]);
+    }
+
+
+    // 订单写入数据库
 	public function store(OrderRequest $request)
     {
         $user  = $request->user();
