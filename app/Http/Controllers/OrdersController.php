@@ -10,8 +10,7 @@ use App\Models\Order;
 use Carbon\Carbon;
 use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
-use App\Services\CartService;
-
+use App\Services\OrderService;
 
 
 
@@ -45,7 +44,7 @@ class OrdersController extends Controller
 
 
     // 订单写入数据库   利用 Laravel 的自动解析功能注入 CartService 类
-	public function store(OrderRequest $request, CartService $cartService)
+	public function store(OrderRequest $request, OrderService $orderService)
     {
         $user  = $request->user();
         $address = UserAddress::find($request->input('address_id'));
