@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Exceptions\InvalidRequestException;
-
+use App\Models\OrderItem;
 
 
 
@@ -66,6 +66,7 @@ class ProductsController extends Controller
             throw new InvalidRequestException('商品未上架');
         }
 
+
         $favored = false;
         // 用户未登录时返回的是 null，已登录时返回的是对应的用户对象
         if($user = $request->user()) {
@@ -73,6 +74,24 @@ class ProductsController extends Controller
             // boolval() 函数用于把值转为布尔值
             $favored = boolval($user->favoriteProducts()->find($product->id));
         }
+
+
+        // 写商品展示页面的时候预留了商品评价的列表
+        $reviews = OrderItem::query()
+            ->with(['order.user', 'productSku']) // 预先加载关联关系
+            ->where('product_id', $product->id)
+            ->whereNotNull('reviewed_at') // 筛选出已评价的
+            ->orderBy('reviewed_at', 'desc') // 按评价时间倒序
+            ->limit(10) // 取出 10 条
+            ->get();
+
+
+        // 最后别忘了注入到模板中
+        return view('products.show', [
+            'product' => $product,
+            'favored' => $favored,
+            'reviews' => $reviews
+        ]);
 
         return view('products.show', ['product' => $product, 'favored' => $favored]);
     }
