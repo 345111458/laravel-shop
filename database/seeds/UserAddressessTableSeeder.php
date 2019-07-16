@@ -14,16 +14,16 @@ class UserAddressessTableSeeder extends Seeder
      */
     public function run()
     {
-
-    	$user_id = User::all()->pluck('id')->toArray();
-
-    	$faker = app(Faker\Generator::class);
-        //
-        $user_addresses = factory(UserAddress::class)->times(100)->make()->each(function($useraddress) use ($user_id , $faker){
-
-        	$useraddress->user_id = $faker->randomElement($user_id);
+        User::all()->each(function (User $user) {
+            factory(UserAddress::class, random_int(1, 3))->create(['user_id' => $user->id]);
         });
 
-        UserAddress::insert($user_addresses->toArray());
+
+    	// $user_id = User::all()->pluck('id')->toArray();
+    	// $faker = app(Faker\Generator::class);
+     //    $user_addresses = factory(UserAddress::class)->times(100)->make()->each(function($useraddress) use ($user_id , $faker){
+     //    	$useraddress->user_id = $faker->randomElement($user_id);
+     //    });
+     //    UserAddress::insert($user_addresses->toArray());
     }
 }

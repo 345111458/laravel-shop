@@ -14,13 +14,14 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
 
-    	$faker = app(Faker\Generator::class);
+        factory(\App\Models\User::class, 100)->create();
+    	// $faker = app(Faker\Generator::class);
 
-    	$users = factory(User::class)->times(10)->make();
+    	// $users = factory(User::class)->times(10)->make();
 
-    	$users_array = $users->makeVisible(['password' , 'remember_token'])->toArray();
+    	// $users_array = $users->makeVisible(['password' , 'remember_token'])->toArray();
 
-    	User::insert($users_array);
+    	// User::insert($users_array);
 
 
         $user = User::find(1);

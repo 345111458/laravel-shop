@@ -14,9 +14,9 @@ class CouponCodeTableSeeder extends Seeder
     public function run()
     {
 
-    	$coupon = factory(CouponCode::class)->times(100)->make();
-
-    	CouponCode::insert($coupon->toArray());
+        factory(\App\Models\CouponCode::class, 100)->create();
+    	// $coupon = factory(CouponCode::class)->times(100)->make();
+    	// CouponCode::insert($coupon->toArray());
         //
     }
 }
