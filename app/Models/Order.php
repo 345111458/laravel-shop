@@ -81,6 +81,12 @@ class Order extends Model
     }
 
 
+    public function couponCode(){
+
+        return $this->belongsTo(CouponCode::class);
+    }
+
+
     // 我们要实现同意退款的逻辑。
     public static function getAvailableRefundNo(){
         
