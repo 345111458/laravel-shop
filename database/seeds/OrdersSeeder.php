@@ -12,7 +12,7 @@ class OrdersSeeder extends Seeder
         // 获取 Faker 实例
         $faker = app(Faker\Generator::class);
         // 创建 100 笔订单
-        $orders = factory(Order::class, 100)->create();
+        $orders = factory(Order::class, 500)->create();
         // 被购买的商品，用于后面更新商品销量和评分
         $products = collect([]);
         foreach ($orders as $order) {
